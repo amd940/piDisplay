@@ -64,7 +64,7 @@ piDisplay.scrollChars(" HI HELLO 1234567890 ", 400);
 | ------ | --------- | ----------- |
 | `displayChars()` | `string`\|`number` chars | Displays one to two static characters on the display. Accepts a string or number (0 to 99). Can be updated very rapidly (without needing to use the `clearDisplay()` method) in a loop or through some other means. |
 | `scrollChars()` | `string` sentence, `number` speed | Displays the given sentence in a scrolling style across the LED display, moving one character at a time. The scrolling speed is specified in milliseconds. |
-| `count()` | `string` upOrDown, `number` speed | Counts one-by-one either up or down on the display from 0 to 99. The speed at which each new number is displayed is specified in milliseconds. |
+| `count()` | `string` upOrDown, `number` speed | Counts one-by-one either up or down on the display from 0 to 99. Use the string `'up'` or `'down'` to specify if the method should count up or down. The speed at which each new number is displayed is specified in milliseconds. |
 | `clearDisplay()` | none | Completely clears the display (turns off all the LEDs) and stops any method that is currently executing. |
 
 ## Properties
