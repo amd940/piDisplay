@@ -3,7 +3,7 @@
 // 2 Digit, 7 Segment LED Display Controller Software for the Raspberry Pi
 // 
 // Authored By: Justin Drentlaw (amd940)
-// Prerequisites: Node.js, Wiring Pi (npm install wiring-pi)
+// Prerequisites: Node.js
 // Licensed Under:
 //
 // The MIT License (MIT)
@@ -33,6 +33,26 @@ var wpi = require('wiring-pi');
 
 wpi.wiringPiSetup();
 
+
+//
+// TODO: Write a constructor function that can reassign these objects if needed.
+//
+
+var cathodePins = {
+	"digitOne": 3,
+	"digitTwo": 2
+};
+
+var ledPins = {
+	"top": 14,
+	"topLeft": 11,
+	"topRight": 5,
+	"middle": 13,
+	"bottomLeft": 12,
+	"bottomRight": 6,
+	"bottom": 10
+};
+
 // Common Cathodes
 // Digit 1
 wpi.pinMode(3, 1);
@@ -56,14 +76,11 @@ wpi.pinMode(6, 1);
 wpi.pinMode(10, 1);
 
 module.exports = {
-	selectDigitNumber: selectDigitNumber,
 	displayChars: displayChars,
-	clock: clock,
-	frequency: frequency,
 	scrollChars: scrollChars,
-	scrollTimer: scrollTimer,
 	count: count,
-	countTimer: countTimer,
+	cathodePins: cathodePins,
+	ledPins: ledPins,
 	clearDisplay: function() {
 		clearInterval(clock);
 		clearInterval(scrollTimer);
@@ -460,6 +477,9 @@ function displayChars(char) {
 var scrollTimer;
 function scrollChars(sentence, speed) {
 	var i = 0;
+	if (!speed) {
+		var speed = 400;
+	}
 	scrollTimer = setInterval(function() {
 		var chars = sentence.substr(i, 2);
 		displayChars(chars);
@@ -473,6 +493,9 @@ function scrollChars(sentence, speed) {
 // Counts up from 0 to 99 or down from 99 to 0 on the display.
 var countTimer;
 function count(upOrDown, speed) {
+	if (!speed) {
+		var speed = 200;
+	}
 	if (upOrDown == 'up') {
 		var i = 0;
 	} else if (upOrDown == 'down') {
@@ -497,6 +520,3 @@ function count(upOrDown, speed) {
 		}
 	}, speed);
 }
-
-//piDisplay.scrollChars(' HELLO 1234567890 ', 600);
-//piDisplay.count('down', 200);

@@ -37,7 +37,11 @@ This is how the display's pins are mapped out on the R-Pi's GPIO pins. There was
 
 # Installation
 
-I'm eventually going to add this module to npm, but for now just download the script and put it in a folder called "piDisplay" within the node_modules folder for your project.
+```
+npm install pi-display
+```
+
+Need help with installation? [See here](https://www.npmjs.com/package/pi-display/tutorial).
 
 # Usage
 
@@ -63,14 +67,19 @@ piDisplay.scrollChars(" HI HELLO 1234567890 ", 400);
 | Method | Argument(s) | Description |
 | ------ | --------- | ----------- |
 | `displayChars()` | `string`\|`number` chars | Displays one to two static characters on the display. Accepts a string or number (0 to 99). Can be updated very rapidly (without needing to use the `clearDisplay()` method) in a loop or through some other means. |
-| `scrollChars()` | `string` sentence, `number` speed | Displays the given sentence in a scrolling style across the LED display, moving one character at a time. The scrolling speed is specified in milliseconds. |
-| `count()` | `string` upOrDown, `number` speed | Counts one-by-one either up or down on the display from 0 to 99. Use the string `'up'` or `'down'` to specify if the method should count up or down. The speed at which each new number is displayed is specified in milliseconds. |
+| `scrollChars()` | `string` sentence, `number` speed | Displays the given sentence in a scrolling style across the LED display, moving one character at a time. The scrolling speed is specified in milliseconds. If no speed is specified, the default `400` is used. |
+| `count()` | `string` upOrDown, `number` speed | Counts one-by-one either up or down on the display from 0 to 99. Use the string `'up'` or `'down'` to specify if the method should count up or down. The speed at which each new number is displayed is specified in milliseconds. If no speed is specified, the default `200` is used. |
 | `clearDisplay()` | none | Completely clears the display (turns off all the LEDs) and stops any method that is currently executing. |
 
 ## Properties
 
-This section is not yet completed. Please check back soon.
+These properties do not currently do anything when reassigned.. I'll have this functionality implemented soon.
 
 | Property | Default Value | Description |
 | -------- | ------------- | ----------- |
-| `pins` | `object` { "top": 1, "bottom": 2 } | Which physical pin number is matched to which segment of the LED |
+| `ledPins` | `object` { "top": 14, "topLeft": 11, "topRight": 5, "middle": 13, "bottomLeft": 12, "bottomRight": 6, "bottom": 10 } | Which physical pin number is matched to which segment of the LED. |
+| `cathodePins` | `object` {"digitOne": 3, "digitTwo": 2} | The physical pin that controls which digit is turned off when set to HIGH. |
+
+# Credits
+
+I'd like to give a huge thanks to drogon for his excellent [Wiring Pi](http://wiringpi.com/) library, Soarez for making the [original Node.js bindings](https://github.com/Soarez/node-wiring-pi) for Wiring Pi, and eugeneware for enhancing Soarez's work on the [newer Node.js bindings](https://github.com/eugeneware/wiring-pi).
