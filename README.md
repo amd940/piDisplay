@@ -46,7 +46,7 @@ Need help with installation? [See here](https://www.npmjs.com/package/pi-display
 # Usage
 
 ```javascript
-var piDisplay = require("piDisplay");
+var piDisplay = require("pi-display");
 
 // Displays E7 on the LED display.
 piDisplay.displayChars("E7");
