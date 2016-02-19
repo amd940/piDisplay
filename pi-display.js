@@ -31,81 +31,108 @@
 
 var wpi = require('wiring-pi');
 
-wpi.wiringPiSetup();
-
-
-//
-// TODO: Write a constructor function that can reassign these objects if needed.
-//
+wpi.wiringPiSetupPhys();
 
 var cathodePins = {
-	"digitOne": 3,
-	"digitTwo": 2
+	"digitOne": 15,
+	"digitTwo": 13
 };
 
 var ledPins = {
-	"top": 14,
-	"topLeft": 11,
-	"topRight": 5,
-	"middle": 13,
-	"bottomLeft": 12,
-	"bottomRight": 6,
-	"bottom": 10
+	"top": 23,
+	"topLeft": 26,
+	"topRight": 18,
+	"middle": 21,
+	"bottomLeft": 19,
+	"bottomRight": 22,
+	"bottom": 24
+};
+
+module.exports = function(userLedPins, userCathodePins) {
+	if (typeof userLedPins == 'object') {
+		if (userLedPins.top != ledPins.top) {
+			ledPins.top = userLedPins.top;
+		}
+		if (userLedPins.topLeft != ledPins.topLeft) {
+			ledPins.topLeft = userLedPins.topLeft;
+		}
+		if (userLedPins.topRight != ledPins.topRight) {
+			ledPins.topRight = userLedPins.topRight;
+		}
+		if (userLedPins.middle != ledPins.middle) {
+			ledPins.middle = userLedPins.middle;
+		}
+		if (userLedPins.bottomLeft != ledPins.bottomLeft) {
+			ledPins.bottomLeft = userLedPins.bottomLeft;
+		}
+		if (userLedPins.bottomRight != ledPins.bottomRight) {
+			ledPins.bottomRight = userLedPins.bottomRight;
+		}
+		if (userLedPins.bottom != ledPins.bottom) {
+			ledPins.bottom = userLedPins.bottom;
+		}
+	}
+	if (typeof userCathodePins == 'object') {
+		if (userCathodePins.digitOne != cathodePins.digitOne) {
+			cathodePins.digitOne = userCathodePins.digitOne;
+		}
+		if (userCathodePins.digitTwo != cathodePins.digitTwo) {
+			cathodePins.digitTwo = userCathodePins.digitTwo;
+		}
+	}
+	this.displayChars = displayChars;
+	this.scrollChars = scrollChars;
+	this.count = count;
+	this.cathodePins = cathodePins;
+	this.ledPins = ledPins;
+	this.clearDisplay = function() {
+		clearInterval(clock);
+		clearInterval(scrollTimer);
+		clearInterval(countTimer);
+		wpi.digitalWrite(cathodePins.digitOne, 0);
+		wpi.digitalWrite(cathodePins.digitTwo, 0);
+		wpi.digitalWrite(ledPins.middle, 0);
+		wpi.digitalWrite(ledPins.bottomLeft, 0);
+		wpi.digitalWrite(ledPins.bottom, 0);
+		wpi.digitalWrite(ledPins.bottomRight, 0);
+		wpi.digitalWrite(ledPins.topRight, 0);
+		wpi.digitalWrite(ledPins.top, 0);
+		wpi.digitalWrite(ledPins.topLeft, 0);
+	};
+	return this;
 };
 
 // Common Cathodes
 // Digit 1
-wpi.pinMode(3, 1);
+wpi.pinMode(cathodePins.digitOne, 1);
 // Digit 2
-wpi.pinMode(2, 1);
+wpi.pinMode(cathodePins.digitTwo, 1);
 
 // Display Pins
 // Top
-wpi.pinMode(14, 1);
+wpi.pinMode(ledPins.top, 1);
 // Top Left
-wpi.pinMode(11, 1);
+wpi.pinMode(ledPins.topLeft, 1);
 // Top Right
-wpi.pinMode(5, 1);
+wpi.pinMode(ledPins.topRight, 1);
 // Middle
-wpi.pinMode(13, 1);
+wpi.pinMode(ledPins.middle, 1);
 // Bottom Left
-wpi.pinMode(12, 1);
+wpi.pinMode(ledPins.bottomLeft, 1);
 // Bottom Right
-wpi.pinMode(6, 1);
+wpi.pinMode(ledPins.bottomRight, 1);
 // Bottom
-wpi.pinMode(10, 1);
-
-module.exports = {
-	displayChars: displayChars,
-	scrollChars: scrollChars,
-	count: count,
-	cathodePins: cathodePins,
-	ledPins: ledPins,
-	clearDisplay: function() {
-		clearInterval(clock);
-		clearInterval(scrollTimer);
-		clearInterval(countTimer);
-		wpi.digitalWrite(3, 0);
-		wpi.digitalWrite(3, 0);
-		wpi.digitalWrite(13, 0);
-		wpi.digitalWrite(12, 0);
-		wpi.digitalWrite(10, 0);
-		wpi.digitalWrite(6, 0);
-		wpi.digitalWrite(5, 0);
-		wpi.digitalWrite(14, 0);
-		wpi.digitalWrite(11, 0);
-	}
-};
+wpi.pinMode(ledPins.bottom, 1);
 
 // A helper function for displayChars(). Selects the digit
 // in which to display the character on.
 function selectDigitNumber(x) {
 	if (x == 0) {
-		wpi.digitalWrite(3, 0);
-		wpi.digitalWrite(2, 1);
+		wpi.digitalWrite(cathodePins.digitOne, 0);
+		wpi.digitalWrite(cathodePins.digitTwo, 1);
 	} else {
-		wpi.digitalWrite(3, 1);
-		wpi.digitalWrite(2, 0);
+		wpi.digitalWrite(cathodePins.digitOne, 1);
+		wpi.digitalWrite(cathodePins.digitTwo, 0);
 	}
 }
 
@@ -180,289 +207,289 @@ function displayChars(char) {
 			switch (char) {
 				case 'A':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'b':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'C':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'c':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 'd':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 'E':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'F':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'H':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'h':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'J':
 				case 'j':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 'L':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'n':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 'o':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 'P':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'y':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'U':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 'u':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 0:
 				case 'O':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 1:
 				case 'I':
 				case 'l':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 2:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 3:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 4:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 5:
 				case 'S':
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 6:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 7:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 				case 8:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 1);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 1);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case 9:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 1);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 1);
-					wpi.digitalWrite(6, 1);
-					wpi.digitalWrite(5, 1);
-					wpi.digitalWrite(14, 1);
-					wpi.digitalWrite(11, 1);
+					wpi.digitalWrite(ledPins.middle, 1);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 1);
+					wpi.digitalWrite(ledPins.bottomRight, 1);
+					wpi.digitalWrite(ledPins.topRight, 1);
+					wpi.digitalWrite(ledPins.top, 1);
+					wpi.digitalWrite(ledPins.topLeft, 1);
 					break;
 				case ' ':
 				default:
 					selectDigitNumber(digit);
-					wpi.digitalWrite(13, 0);
-					wpi.digitalWrite(12, 0);
-					wpi.digitalWrite(10, 0);
-					wpi.digitalWrite(6, 0);
-					wpi.digitalWrite(5, 0);
-					wpi.digitalWrite(14, 0);
-					wpi.digitalWrite(11, 0);
+					wpi.digitalWrite(ledPins.middle, 0);
+					wpi.digitalWrite(ledPins.bottomLeft, 0);
+					wpi.digitalWrite(ledPins.bottom, 0);
+					wpi.digitalWrite(ledPins.bottomRight, 0);
+					wpi.digitalWrite(ledPins.topRight, 0);
+					wpi.digitalWrite(ledPins.top, 0);
+					wpi.digitalWrite(ledPins.topLeft, 0);
 					break;
 			}
 			i++;
