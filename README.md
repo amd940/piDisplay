@@ -17,7 +17,7 @@ This is a beta version of piDisplay. Everything works correctly as is, but I pla
 # Pin Layout/Configuration
 
 The model of LED display I am using is a Kingbright DA03-11GWA, and the pinout is shown in the image below. For the full tech sheet, [see here](http://www.kingbrightusa.com/images/catalog/SPEC/DA03-11GWA.pdf).
-![LED Display Pin Layout](https://240studios.com/projects/pi-display/hotlink-ok/pin-layout.png "LED Display Pin Layout")
+![LED Display Pin Layout](https://monoclecollective.com/projects/pi-display/hotlink-ok/pin-layout.png "LED Display Pin Layout")
 
 As you can see the display uses two pins for common cathodes, seven pins for the LEDs themselves, and pin 2 is not connected. If you do not have the same display, that's fine, just be sure it's common cathode and not common anode, and that it has two common cathode pins and seven pins for the LED segments of the digits. You'll also need to remap the pins manually if your different display does not match the pinout of the display above.
 
