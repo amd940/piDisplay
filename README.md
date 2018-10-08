@@ -6,13 +6,13 @@ This is a beta version of piDisplay. Everything works correctly as is, but I pla
 # Sample Images
 
 ## Scrolling Text Across Display
-![Scrolling Text Across Display](https://240studios.com/projects/pi-display/hotlink-ok/scroller.gif "Scrolling Text Across Display")
+![Scrolling Text Across Display](https://monoclecollective.com/projects/pi-display/hotlink-ok/scroller.gif "Scrolling Text Across Display")
 
 ## Counting Up on the Display
-![Counting Up on the Display](https://240studios.com/projects/pi-display/hotlink-ok/countup.gif "Counting Up on the Display")
+![Counting Up on the Display](https://monoclecollective.com/projects/pi-display/hotlink-ok/countup.gif "Counting Up on the Display")
 
 ## Counting Down on the Display
-![Counting Down on the Display](https://240studios.com/projects/pi-display/hotlink-ok/countdown.gif "Counting Down on the Display")
+![Counting Down on the Display](https://monoclecollective.com/projects/pi-display/hotlink-ok/countdown.gif "Counting Down on the Display")
 
 # Pin Layout/Configuration
 
